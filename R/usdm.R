@@ -10,7 +10,7 @@ usdm_query <- function(endpoint, ...) {
 #' @export
 #' @return "OK" string on success
 usdm_v1_ping <- function() {
-    res <- usdm_query("/fapi/v1/ping")
+    res <- usdm_query("/dapi/v1/ping")
     if (is.list(res) & length(res) == 0) {
         res <- "OK"
     }
@@ -21,7 +21,7 @@ usdm_v1_ping <- function() {
 #' @export
 #' @return \code{POSIXct}
 usdm_v1_time <- function() {
-    res <- usdm_query("/fapi/v1/time")$serverTime
+    res <- usdm_query("/dapi/v1/time")$serverTime
     res <- as_timestamp(res / 1e3)
     res
 }
@@ -31,7 +31,7 @@ usdm_v1_time <- function() {
 #' @export
 #' @importFrom jsonlite fromJSON
 usdm_v1_exchange_info <- function() {
-    res <- usdm_query("/fapi/v1/exchangeInfo", content_as = "text")
+    res <- usdm_query("/dapi/v1/exchangeInfo", content_as = "text")
     res <- fromJSON(res)
     res$serverTime <- as_timestamp(res$serverTime / 1e3)
     res$rateLimits <- as.data.table(res$rateLimits)
@@ -76,7 +76,7 @@ usdm_v1_premium_index <- function(symbol) {
         params$symbol <- symbol
     }
 
-    res <- usdm_query("/fapi/v1/premiumIndex", params = params)
+    res <- usdm_query("/dapi/v1/premiumIndex", params = params)
 
     if (missing(symbol)) {
         res <- rbindlist(res)
@@ -123,7 +123,7 @@ usdm_v1_new_order <- function(symbol,
     )
 
     order <- usdm_query(
-        "/fapi/v1/order",
+        "/dapi/v1/order",
         method = "POST",
         params = params,
         sign = TRUE
@@ -148,7 +148,7 @@ usdm_v1_open_orders <- function(symbol) {
     }
 
     order <- usdm_query(
-        "/fapi/v1/openOrders",
+        "/dapi/v1/openOrders",
         params = params,
         sign = TRUE
     )
@@ -169,7 +169,7 @@ usdm_v2_position_risks <- function(symbol) {
 
     rbindlist(
         usdm_query(
-            "/fapi/v2/positionRisk",
+            "/dapi/v2/positionRisk",
             params = params,
             sign = TRUE
         )
@@ -198,7 +198,7 @@ convert_position_risks <- function(positions) {
 #' @return list
 #' @export
 usdm_v2_account <- function() {
-    account <- usdm_query("/fapi/v2/account", sign = TRUE)
+    account <- usdm_query("/dapi/v2/account", sign = TRUE)
     account$assets <- rbindlist(account$assets)
     account$positions <- rbindlist(account$positions)
     account
@@ -216,7 +216,7 @@ usdm_v1_change_initial_leverage <- function(symbol, leverage) {
     )
 
     usdm_query(
-        "/fapi/v1/leverage",
+        "/dapi/v1/leverage",
         method = "POST",
         params = params,
         sign = TRUE
@@ -236,7 +236,7 @@ usdm_v1_change_margin_type <- function(symbol,
     )
 
     usdm_query(
-        "/fapi/v1/marginType",
+        "/dapi/v1/marginType",
         method = "POST",
         params = params,
         sign = TRUE
@@ -255,7 +255,7 @@ usdm_v1_cancel_order_by_id <- function(symbol, order_id) {
     )
 
     order <- usdm_query(
-        "/fapi/v1/order",
+        "/dapi/v1/order",
         method = "DELETE",
         params = params,
         sign = TRUE
@@ -276,7 +276,7 @@ usdm_v1_cancel_order_by_client_order_id <- function(symbol, client_order_id) {
     )
 
     order <- usdm_query(
-        "/fapi/v1/order",
+        "/dapi/v1/order",
         method = "DELETE",
         params = params,
         sign = TRUE
