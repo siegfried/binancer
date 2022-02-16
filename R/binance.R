@@ -15,7 +15,7 @@ BINANCE <- list(
                    "MAX_NUM_ORDERS", "MAX_NUM_ALGO_ORDERS",
                    "MIN_NOTIONAL", "PERCENT_PRICE"),
         TIMEINFORCE = c('GTC', 'IOC', 'FOK', 'GTX'),
-        POSITION_SIDE = c('LONG', 'SHORT'),
+        POSITION_SIDE = c('BOTH', 'LONG', 'SHORT'),
         TYPE = c('LIMIT', 'MARKET',
                  'STOP', 'STOP_MARKET',
                  'TAKE_PROFIT', 'TAKE_PROFIT_MARKET',
