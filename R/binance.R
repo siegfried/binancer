@@ -798,14 +798,14 @@ binance_new_order <- function(symbol, side, type, time_in_force, quantity, price
               quantity <= filters[filterType == 'LOT_SIZE', maxQty])
     # work around the limitation of %% (e.g. 200.1 %% 0.1 = 0.1 !!)
     quot <- (quantity - filters[filterType == 'LOT_SIZE', minQty]) / filters[filterType == 'LOT_SIZE', stepSize]
-    stopifnot(abs(quot - round(quot)) < 1e-10)
+    stopifnot(abs(quot - round(quot)) < 1)
 
     if (type == 'MARKET') {
         stopifnot(quantity >= filters[filterType == 'MARKET_LOT_SIZE', minQty],
                   quantity <= filters[filterType == 'MARKET_LOT_SIZE', maxQty])
         # work around the limitation of %% (e.g. 200.1 %% 0.1 = 0.1 !!)
         quot <- (quantity - filters[filterType == 'MARKET_LOT_SIZE', minQty]) / filters[filterType == 'MARKET_LOT_SIZE', stepSize]
-        stopifnot(abs(quot - round(quot)) < 1e-10)
+        stopifnot(abs(quot - round(quot)) < 1)
 
         if (isTRUE(filters[filterType == 'MIN_NOTIONAL', applyToMarket])) {
             if (filters[filterType == 'MIN_NOTIONAL', avgPriceMins] == 0) {
