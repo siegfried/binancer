@@ -176,6 +176,22 @@ usdm_v2_position_risks <- function(symbol) {
     )
 }
 
+# Trade list (sp)
+usdm_v1_trades <- function(symbol) {
+    params <- list()
+
+    if (!missing(symbol)) {
+        params$symbol <- symbol
+    }
+
+    rbindlist(
+        usdm_query(
+            "/dapi/v1/userTrades",
+            sign = TRUE
+        )
+    )
+}
+
 #' Convert columns of positions into numeric.
 #' @param positions data.table
 #' @return data.table
