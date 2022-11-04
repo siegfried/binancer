@@ -176,7 +176,8 @@ usdm_v2_position_risks <- function(symbol) {
     )
 }
 
-# Trade list (sp)
+#' Trade list (sp)
+#' @export
 usdm_v1_trades <- function(symbol) {
     params <- list()
 
