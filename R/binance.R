@@ -807,15 +807,15 @@ binance_new_order <- function(symbol, side, type, time_in_force, quantity, price
         quot <- (quantity - filters[filterType == 'MARKET_LOT_SIZE', minQty]) / filters[filterType == 'MARKET_LOT_SIZE', stepSize]
         stopifnot(abs(quot - round(quot)) < 1)
 
-        if (isTRUE(filters[filterType == 'MIN_NOTIONAL', applyToMarket])) {
-            if (filters[filterType == 'MIN_NOTIONAL', avgPriceMins] == 0) {
+        if (isTRUE(filters[filterType == 'NOTIONAL', applyToMarket])) {
+            if (filters[filterType == 'NOTIONAL', avgPriceMins] == 0) {
                 ref_price <- binance_ticker_price(symbol)$price
             } else {
                 ref_price <- binance_avg_price(symbol)
-                stopifnot(ref_price$mins == filters[filterType == 'MIN_NOTIONAL', avgPriceMins])
+                stopifnot(ref_price$mins == filters[filterType == 'NOTIONAL', avgPriceMins])
                 ref_price <- ref_price$price
             }
-            stopifnot(ref_price * quantity >= filters[filterType == 'MIN_NOTIONAL', minNotional])
+            stopifnot(ref_price * quantity >= filters[filterType == 'NOTIONAL', minNotional])
         }
     }
 
@@ -830,11 +830,11 @@ binance_new_order <- function(symbol, side, type, time_in_force, quantity, price
             stopifnot(abs(quot - round(quot)) < 1e-10)
         }
 
-if (filters[filterType == 'MIN_NOTIONAL', avgPriceMins] == 0) {
+if (filters[filterType == 'NOTIONAL', avgPriceMins] == 0) {
             ref_price <- binance_ticker_price(symbol)$price
         } else {
             ref_price <- binance_avg_price(symbol)
-stopifnot(ref_price$mins == filters[filterType == 'MIN_NOTIONAL', avgPriceMins])
+stopifnot(ref_price$mins == filters[filterType == 'NOTIONAL', avgPriceMins])
             ref_price <- ref_price$price
         }
         stopifnot(
@@ -842,7 +842,7 @@ stopifnot(ref_price$mins == filters[filterType == 'MIN_NOTIONAL', avgPriceMins])
             price <= ref_price * filters[filterType == 'PERCENT_PRICE_BY_SIDE', 'askMultiplierUp']
         )
 
-        stopifnot(price * quantity >= filters[filterType == 'MIN_NOTIONAL', minNotional])
+        stopifnot(price * quantity >= filters[filterType == 'NOTIONAL', minNotional])
 
         params$price = price
     }
