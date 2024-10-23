@@ -10,7 +10,7 @@ usdm_query <- function(endpoint, ...) {
 #' @export
 #' @return "OK" string on success
 usdm_v1_ping <- function() {
-    res <- usdm_query("/dapi/v1/ping")
+    res <- usdm_query("/papi/v1/ping")
     if (is.list(res) & length(res) == 0) {
         res <- "OK"
     }
@@ -31,7 +31,7 @@ usdm_v1_time <- function() {
 #' @export
 #' @importFrom jsonlite fromJSON
 usdm_v1_exchange_info <- function() {
-    res <- usdm_query("/dapi/v1/exchangeInfo", content_as = "text")
+    res <- usdm_query("/papi/v1/exchangeInfo", content_as = "text")
     res <- fromJSON(res)
     res$serverTime <- as_timestamp(res$serverTime / 1e3)
     res$rateLimits <- as.data.table(res$rateLimits)
@@ -122,8 +122,8 @@ usdm_v1_new_order <- function(symbol,
         ...
     )
 
-    order <- usdm_query(
-        "/dapi/v1/order",
+    order <- usdm_query( 
+        "/papi/v1/cm/order",
         method = "POST",
         params = params,
         sign = TRUE
@@ -148,7 +148,7 @@ usdm_v1_open_orders <- function(symbol) {
     }
 
     order <- usdm_query(
-        "/dapi/v1/openOrders",
+        "/papi/v1/cm/openOrders",
         params = params,
         sign = TRUE
     )
@@ -188,7 +188,7 @@ usdm_v1_trades <- function(symbol) {
 
     rbindlist(
         usdm_query(
-            "/dapi/v1/userTrades",
+            "/papi/v1/cm/userTrades",
             sign = TRUE
         )
     )
